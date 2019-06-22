@@ -18,7 +18,8 @@ chargestate<-2
 
 StandardValue<-1.70429e-12  #input of Standardvalue Be10/9
 
-setwd('M://ibares/AMS/AMS-Messdaten/2017/2017_09_18ff_Be10/batches-be10/2017_09_21_Be_AWI_17c/')
+#setwd('M://ibares/AMS/AMS-Messdaten/2017/2017_09_18ff_Be10/batches-be10/2017_09_21_Be_AWI_17c/')
+setwd('~/Documents/Physik/000_HZDR/ams/data_analysis/tmp/2017_09_20_Be_AWI_17f/')
 dir.create(paste(getwd(),"/rough_results_dggr",sep=""))
 results_directory<-paste(getwd(),"/rough_results_dggr", sep="")
 
@@ -29,17 +30,17 @@ details<-details[order(details$mtime),]
 all.files<-as.character(rownames(details))
 all_blocks_samples<-data.frame()
 
-
+#i<-1
 for(i in 1:length(all.files)){
   fsires<-data.frame()
   #sample_summary<-data.frame()
   
   filename<-all.files[i]
-  header<-fread(paste(getwd(),filename,sep="/"),skip=1, nrows = 5,fill = T)
-  time_stamp<-paste(header[1]$V2,header[1]$V3,header[1]$V4, sep = ":")
-  id<-header[3]$V2
-  position<-header[4]$V2
-  description<-paste(header[5]$V2,header[7]$V3)
+  header<-fread(paste(getwd(),filename,sep="/"),skip=0, nrows = 7,fill = T)
+  time_stamp<-paste(header[2]$V5,header[2]$V6,header[2]$V7, sep = " ")
+  id<-header[4]$V4
+  position<-header[5]$V4
+  description<-header[6]$V4
   
   
   if (!grepl("C_in_Cu",id)  &  !grepl("X00",id)){
@@ -48,7 +49,7 @@ for(i in 1:length(all.files)){
     sample_id<-rep(id,dim(fsires)[1])
     sample_position<-rep(position,dim(fsires)[1])
     sample_description<-rep(description,dim(fsires)[1])
-    
+  
     fsires<-cbind(sample_id,sample_description,sample_position,res_file,fsires)
     fsires[is.na(fsires)]<-0
     
